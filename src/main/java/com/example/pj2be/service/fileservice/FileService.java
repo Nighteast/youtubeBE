@@ -28,10 +28,10 @@ public class FileService {
 
     private final S3Client s3;
 
-    @Value("mybucketcontainer1133557799")
+    @Value("${aws.s3.bucket.name}")
     private String bucket;
 
-    @Value("https://mybucketcontainer1133557799.s3.ap-northeast-2.amazonaws.com/")
+    @Value("${image.file.prefix}")
     private String urlPrefix;
 
 
