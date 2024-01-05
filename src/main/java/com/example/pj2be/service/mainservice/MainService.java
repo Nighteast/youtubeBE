@@ -58,9 +58,6 @@ public class MainService {
             endDay = SeoulTime.with(TemporalAdjusters.lastDayOfMonth()).with(LocalTime.MIDNIGHT);
         }
 
-        List<BoardDTO> otherBoardList;
-        List<BoardDTO> firstBoardList;
-
         if (c.equals("all")) {
             if (mapper.selectOtherByALl2(startDay, endDay).isEmpty()) {
                 map.put("otherBoardList", mapper.selectOtherByALl1());
