@@ -58,10 +58,17 @@ public class MainService {
             endDay = SeoulTime.with(TemporalAdjusters.lastDayOfMonth()).with(LocalTime.MIDNIGHT);
         }
 
+        List<BoardDTO> otherBoardList;
+        List<BoardDTO> firstBoardList;
 
         if (c.equals("all")) {
-            map.put("otherBoardList", mapper.selectOtherByALl2(startDay, endDay));
-            map.put("firstBoardList", mapper.selectFirstByAll2(startDay, endDay));
+            if (mapper.selectOtherByALl2(startDay, endDay).isEmpty()) {
+                map.put("otherBoardList", mapper.selectOtherByALl1());
+                map.put("firstBoardList", mapper.selectFirstByAll1());
+            } else {
+                map.put("otherBoardList", mapper.selectOtherByALl2(startDay, endDay));
+                map.put("firstBoardList", mapper.selectFirstByAll2(startDay, endDay));
+            }
         } else {
             map.put("otherBoardList", mapper.selectOtherByCategory2(c, startDay, endDay));
             map.put("firstBoardList", mapper.selectFirstByCategory2(c, startDay, endDay));

@@ -11,6 +11,33 @@ import java.util.List;
 public interface MainMapper {
 
 
+    /* 메인페이지 접속 시 날짜 조건에 맞는 게시물이 없을 경우 */
+    @Select("""
+        SELECT b.id,
+               b.title,
+               b.content,
+               b.link,
+               b.board_category_code,
+               b.board_member_id,
+               b.created_at,
+               b.updated_at,
+               COUNT(DISTINCT bl.id) countlike,
+               COUNT(DISTINCT c.id) count_comment,
+               ct.name categoryName,
+               ct.name_eng,
+               is_show,
+               views,
+               b.isYouTubeLink
+        FROM board b LEFT JOIN youtube.boardlike bl on b.id = bl.board_id
+                     LEFT JOIN comment c ON b.id = c.board_id
+                     LEFT JOIN youtube.category ct on ct.code = b.board_category_code
+        WHERE b.link LIKE '%https://%' AND is_show = 1 AND b.board_category_code not LIKE 'C001' AND b.isYouTubeLink = 1
+        GROUP BY b.id, views, b.created_at
+        ORDER BY countlike desc, b.views desc, b.created_at, b.id
+        LIMIT 4 OFFSET 1;
+        """)
+    List<BoardDTO> selectOtherByALl1();
+
     @Select("""
         SELECT b.id,
                b.title,
@@ -37,6 +64,31 @@ public interface MainMapper {
         """)
     List<BoardDTO> selectOtherByALl2(LocalDateTime startDay, LocalDateTime endDay);
 
+    @Select("""
+        SELECT b.id,
+               b.title,
+               b.content,
+               b.link,
+               b.board_category_code,
+               b.board_member_id,
+               b.created_at,
+               b.updated_at,
+               COUNT(DISTINCT bl.id) countlike,
+               COUNT(DISTINCT c.id) count_comment,
+               ct.name categoryName,
+               ct.name_eng,
+               is_show,
+               views,
+               b.isYouTubeLink
+        FROM board b LEFT JOIN youtube.boardlike bl on b.id = bl.board_id
+                     LEFT JOIN comment c ON b.id = c.board_id
+                     LEFT JOIN youtube.category ct on ct.code = b.board_category_code
+        WHERE b.link LIKE '%https://%' AND is_show = 1 AND b.board_category_code not LIKE 'C001' AND b.isYouTubeLink = 1
+        GROUP BY b.id, views, b.created_at 
+        ORDER BY countlike desc, b.views desc, b.created_at, b.id
+        LIMIT 0, 1 ;
+        """)
+    BoardDTO selectFirstByAll1();
 
     @Select("""
         SELECT b.id,
